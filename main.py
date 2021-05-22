@@ -17,6 +17,8 @@ class mainwindow(QWidget):
 
         self.a = ''
         self.b = ''
+        self.op = ''
+        self.op2 = ''
 
         self.ui.sum.clicked.connect(self.sum)
         self.ui.sub.clicked.connect(self.sub)
