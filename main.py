@@ -27,6 +27,7 @@ class mainwindow(QWidget):
         self.ui.clear.clicked.connect(self.clear)
         self.ui.btn_dot.clicked.connect(self.dot)
         self.ui.negative.clicked.connect(self.negative)
+        self.ui.percent.clicked.connect(self.percent)
 
 
         self.ui.btn_1.clicked.connect(self.num1)
@@ -71,7 +72,9 @@ class mainwindow(QWidget):
         self.ui.tb1.setText(self.ui.tb1.text() + '0')
 
     def equal(self):
-        self.b = self.ui.tb1.text()
+
+        if self.op2 != '%':
+            self.b = self.ui.tb1.text()
 
         if isinstance(self.a, str):
             if '.' in self.a:
@@ -90,9 +93,20 @@ class mainwindow(QWidget):
         #     self.b = int(self.b)
 
         if self.op == '+':
-            res = (self.a) + (self.b)
+            if self.op2 == '%':
+                self.a, self.b = int(self.a),int(self.b)
+                res = (self.a) + (self.b / 100)*(self.a)
+                self.op2 = ''
+            else:
+                res = (self.a) + (self.b)
+
         elif self.op == '-':
-            res = (self.a) - (self.b)
+            if self.op2 == '%':
+                self.a, self.b = int(self.a),int(self.b)
+                res = (self.a) - (self.b / 100)*(self.a)
+                self.op2 = ''
+            else:
+                res = (self.a) - (self.b)
         elif self.op == '*':
             res = (self.a) * (self.b)
         elif self.op == '/':
@@ -102,7 +116,7 @@ class mainwindow(QWidget):
                 self.ui.tb1.clear()
                 self.ui.tb1.setText('IMPOSSIBLE!')
 
-        #res = self.a
+        # res = self.a
         if res is not None:
             if type(res) is float:
                 res = format(res, '.7f')
@@ -143,6 +157,12 @@ class mainwindow(QWidget):
             self.ui.tb1.setText(self.ui.tb1.text().lstrip('-'))
         else:
             self.ui.tb1.setText('-' + self.ui.tb1.text())
+
+    def percent(self):
+        self.op2 = '%'
+        self.b = self.ui.tb1.text()
+        self.ui.tb1.clear()
+
 
 
 if __name__ == "__main__":
